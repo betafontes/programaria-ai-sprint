@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard de Início de Dia</title>
+  <meta name="description" content="Um painel moderno, minimalista e escuro para focar no que realmente importa no início da sua jornada de trabalho." />
+  
+  <!-- Fontes do Google: Outfit (Moderna e geométrica) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── SISTEMA DE DESIGN & VARIÁVEIS ─── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Cores Base (Dark Theme) */
+      --bg-dark: #05070f;
+      --bg-card: rgba(13, 17, 30, 0.7);
+      --bg-card-hover: rgba(22, 28, 48, 0.8);
+      --border-color: rgba(255, 255, 255, 0.05);
+      --border-hover: rgba(255, 255, 255, 0.12);
+      
+      /* Tipografia */
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      /* Cores de Destaque */
+      --color-primary: #6366f1; /* Indigo */
+      --color-primary-glow: rgba(99, 102, 241, 0.15);
+      
+      --color-email: #0ea5e9; /* Sky Blue */
+      --color-email-glow: rgba(14, 165, 233, 0.15);
+      
+      --color-meeting: #10b981; /* Emerald */
+      --color-meeting-glow: rgba(16, 185, 129, 0.15);
+      
+      --color-task: #f59e0b; /* Amber */
+      --color-task-glow: rgba(245, 158, 11, 0.15);
+      
+      /* Efeitos */
+      --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html, body {
+      height: 100%;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* ─── GLOW ORBS (Fundo Animado/Mesh Gradient) ─── */
+    .glow-orbs {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.25;
+      animation: float 25s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--color-email) 0%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #d946ef 0%, transparent 70%);
+      top: 30%;
+      right: 15%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, -30px) scale(1.08); }
+      100% { transform: translate(-30px, 30px) scale(0.95); }
+    }
+
+    /* ─── CONTAINER PRINCIPAL ─── */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ─── CABEÇALHO ─── */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
+      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .header-welcome {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .welcome-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      width: max-content;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-meeting);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .welcome-title {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 70%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .welcome-date {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+
+    .icon-date {
+      width: 18px;
+      height: 18px;
+      color: var(--color-primary);
+    }
+
+    .header-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1.25rem 0.5rem 0.6rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(8px);
+      transition: var(--transition-smooth);
+    }
+
+    .header-profile:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+    }
+
+    .profile-avatar-fallback {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary) 0%, #d946ef 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 1.1rem;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .profile-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .profile-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── CARDS DE RESUMO (Métricas) ─── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .metric-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-6px);
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Brilho interativo no card hover */
+    .card-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: var(--transition-smooth);
+      z-index: 0;
+    }
+
+    .card-email:hover .card-glow {
+      opacity: 1;
+      background: radial-gradient(circle at 10% 10%, var(--color-email-glow) 0%, transparent 60%);
+    }
+    .card-meeting:hover .card-glow {
+      opacity: 1;
+      background: radial-gradient(circle at 10% 10%, var(--color-meeting-glow) 0%, transparent 60%);
+    }
+    .card-task:hover .card-glow {
+      opacity: 1;
+      background: radial-gradient(circle at 10% 10%, var(--color-task-glow) 0%, transparent 60%);
+    }
+
+    .card-email:hover { border-color: rgba(14, 165, 233, 0.35); }
+    .card-meeting:hover { border-color: rgba(16, 185, 129, 0.35); }
+    .card-task:hover { border-color: rgba(245, 158, 11, 0.35); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-icon-container {
+      width: 50px;
+      height: 50px;
+      border-radius: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .card-email .card-icon-container {
+      background: rgba(14, 165, 233, 0.08);
+      color: var(--color-email);
+    }
+    .card-meeting .card-icon-container {
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--color-meeting);
+    }
+    .card-task .card-icon-container {
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--color-task);
+    }
+
+    .metric-card:hover .card-icon-container {
+      transform: scale(1.05);
+    }
+
+    .card-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-email {
+      background: rgba(14, 165, 233, 0.12);
+      color: #38bdf8;
+    }
+    .badge-meeting {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+    }
+    .badge-task {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+    }
+
+    .card-body {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .card-number {
+      font-size: 3.75rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .card-label {
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .card-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 1.25rem;
+      margin-top: auto;
+    }
+
+    .card-trend {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .card-action {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: var(--transition-smooth);
+    }
+
+    .card-email .card-action { color: var(--color-email); }
+    .card-meeting .card-action { color: var(--color-meeting); }
+    .card-task .card-action { color: var(--color-task); }
+
+    .metric-card:hover .card-action {
+      transform: translateX(4px);
+    }
+
+    /* ─── SEÇÃO DE PRIORIDADES DO DIA ─── */
+    .focus-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .focus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.5rem;
+    }
+
+    .focus-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .focus-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding-bottom: 1.25rem;
+    }
+
+    .focus-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .focus-card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── AGENDA / LISTA DE COMPROMISSOS ─── */
+    .agenda-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .agenda-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.25rem;
+      border-radius: 1.25rem;
+      transition: var(--transition-smooth);
+    }
+
+    .agenda-item:hover {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(4px);
+    }
+
+    .agenda-icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 1rem;
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--color-meeting);
+      flex-shrink: 0;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    .agenda-item:hover .agenda-icon-wrapper {
+      background: var(--color-meeting);
+      color: #ffffff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .agenda-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      flex: 1;
+    }
+
+    .agenda-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .agenda-time {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-meeting);
+    }
+
+    .agenda-badge-container {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .agenda-duration {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.3rem 0.75rem;
+      border-radius: 0.75rem;
+      transition: var(--transition-smooth);
+    }
+
+    .agenda-item:hover .agenda-duration {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Links de chamada */
+    .agenda-call-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-meeting);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.6rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      width: max-content;
+      margin-top: 0.25rem;
+    }
+
+    .agenda-call-link:hover {
+      background: var(--color-meeting);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    /* ─── TAREFAS / CHECKLIST ─── */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.25rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .task-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(4px);
+    }
+
+    .task-item input[type="checkbox"] {
+      display: none;
+    }
+
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 7px;
+      display: inline-block;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: var(--transition-smooth);
+    }
+
+    .task-item:hover .custom-checkbox {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .task-item input[type="checkbox"]:checked + .custom-checkbox {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+
+    .task-item input[type="checkbox"]:checked + .custom-checkbox::after {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 3px;
+      width: 5px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .task-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      flex: 1;
+    }
+
+    .task-item input[type="checkbox"]:checked ~ .task-info .task-name {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .task-name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: var(--transition-smooth);
+    }
+
+    .task-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.35rem;
+      width: max-content;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .tag-high {
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+    }
+
+    .tag-medium {
+      background: rgba(99, 102, 241, 0.1);
+      color: #a5b4fc;
+    }
+
+    .tag-low {
+      background: rgba(100, 116, 139, 0.1);
+      color: #cbd5e1;
+    }
+
+    /* ─── GRÁFICO DE BARRAS ─── */
+    .chart-section {
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .chart-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chart-status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+      border: 1px solid transparent;
+      transition: var(--transition-smooth);
+    }
+
+    .chart-status-indicator.calm {
+      background: rgba(16, 185, 129, 0.08);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.15);
+    }
+
+    .chart-status-indicator.busy {
+      background: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.15);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 200px;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .chart-grid-lines {
+      position: absolute;
+      inset: 0 0 28px 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+    }
+
+    .grid-line-label {
+      position: absolute;
+      right: 0;
+      top: -10px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: #05070f; /* Corresponder ao fundo escuro */
+      padding: 0 0.5rem;
+      border-radius: 4px;
+    }
+
+    .chart-bars {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: calc(100% - 28px);
+      padding: 0 0.5rem;
+    }
+
+    .chart-bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .chart-bar {
+      width: 45%;
+      max-width: 40px;
+      height: var(--height);
+      position: relative;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .bar-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(14, 165, 233, 0.7) 0%, rgba(14, 165, 233, 0.15) 100%);
+      border-radius: 6px 6px 0 0;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      border-bottom: none;
+    }
+
+    .chart-bar:hover .bar-fill {
+      background: linear-gradient(180deg, #38bdf8 0%, rgba(14, 165, 233, 0.4) 100%);
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+      border-color: rgba(14, 165, 233, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .chart-bar-wrapper.active .bar-fill {
+      background: linear-gradient(180deg, #38bdf8 0%, rgba(99, 102, 241, 0.5) 100%);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+      border-color: rgba(99, 102, 241, 0.6);
+    }
+
+    .bar-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: 0.75rem;
+      transition: var(--transition-smooth);
+    }
+
+    .chart-bar-wrapper.active .bar-label {
+      color: var(--text-primary);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .chart-bar::after {
+      content: attr(data-value);
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translate(-50%, 4px) scale(0.9);
+      background: rgba(13, 17, 30, 0.95);
+      color: var(--text-primary);
+      padding: 0.4rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+    }
+
+    .chart-bar:hover::after {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    /* ─── DESIGN RESPONSIVO ─── */
+    @media (max-width: 900px) {
+      .focus-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 2rem 1rem;
+        gap: 2rem;
+      }
+
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+      }
+
+      .header-profile {
+        align-self: flex-start;
+      }
+
+      .chart-bar {
+        width: 65%;
+      }
+      
+      .chart-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* ─── ANIMAÇÕES ADICIONAIS ─── */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Rodapé minimalista */
+    .dashboard-footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 2rem 0 1rem;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Orbs de brilho no fundo -->
+  <div class="glow-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="dashboard-container">
+    
+    <!-- Cabeçalho -->
+    <header class="dashboard-header" role="banner">
+      <div class="header-welcome">
+        <div class="welcome-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          Foco Ativo
+        </div>
+        <h1 class="welcome-title">Por onde começo hoje?</h1>
+        <div class="welcome-date">
+          <!-- Ícone de Calendário SVG -->
+          <svg class="icon-date" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <time id="current-date" datetime="2026-05-22">Carregando data...</time>
+        </div>
+      </div>
+      
+      <!-- Mini Perfil -->
+      <div class="header-profile">
+        <div class="profile-avatar-fallback" aria-hidden="true">R</div>
+        <div class="profile-info">
+          <span class="profile-name">Rober</span>
+          <span class="profile-status">Workspace</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Grid de Métricas Principais -->
+    <main class="metrics-grid" role="main">
+      
+      <!-- Card: Emails não lidos -->
+      <article class="metric-card card-email">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-header">
+          <div class="card-icon-container">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </div>
+          <span class="badge badge-email">Importantes</span>
+        </div>
+        <div class="card-body">
+          <span class="card-number">12</span>
+          <h2 class="card-label">Emails não lidos</h2>
+        </div>
+        <div class="card-footer">
+          <span class="card-trend">3 urgentes do seu gestor</span>
+          <span class="card-action" aria-hidden="true">
+            Ver caixa 
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- Card: Reuniões hoje -->
+      <article class="metric-card card-meeting">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-header">
+          <div class="card-icon-container">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <span class="badge badge-meeting">Próxima às 10:00</span>
+        </div>
+        <div class="card-body">
+          <span class="card-number">4</span>
+          <h2 class="card-label">Reuniões hoje</h2>
+        </div>
+        <div class="card-footer">
+          <span class="card-trend">Próximo: Daily Standup</span>
+          <span class="card-action" aria-hidden="true">
+            Ver agenda 
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- Card: Tarefas pendentes -->
+      <article class="metric-card card-task">
+        <div class="card-glow" aria-hidden="true"></div>
+        <div class="card-header">
+          <div class="card-icon-container">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <span class="badge badge-task">Alta prioridade</span>
+        </div>
+        <div class="card-body">
+          <span class="card-number">7</span>
+          <h2 class="card-label">Tarefas pendentes</h2>
+        </div>
+        <div class="card-footer">
+          <span class="card-trend">3 com prazo para hoje</span>
+          <span class="card-action" aria-hidden="true">
+            Acessar checklist 
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Seção do Gráfico de Volume -->
+    <section class="chart-section" aria-labelledby="chart-title">
+      <div class="focus-card chart-card">
+        <div class="chart-header-row">
+          <div class="focus-card-header">
+            <h3 id="chart-title" class="focus-card-title">Volume de Emails na Semana</h3>
+            <span class="focus-card-subtitle">Volume diário de mensagens recebidas nos últimos 7 dias</span>
+          </div>
+          <div class="chart-status-indicator calm">
+            <span class="pulse-dot" style="background-color: var(--color-meeting);" aria-hidden="true"></span>
+            Carregando status do dia...
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <!-- Grid lines / Average line -->
+          <div class="chart-grid-lines">
+            <div class="grid-line" style="bottom: 60%;">
+              <span class="grid-line-label">Média da semana (18)</span>
+            </div>
+          </div>
+          
+          <div class="chart-bars">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 47%;" data-value="14 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Seg</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 93%;" data-value="28 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Ter</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 63%;" data-value="19 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Qua</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 73%;" data-value="22 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Qui</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 40%;" data-value="12 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Sex</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 10%;" data-value="3 emails">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Sáb</span>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="--height: 3%;" data-value="1 email">
+                <div class="bar-fill"></div>
+              </div>
+              <span class="bar-label">Dom</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Ação Adicional (Prioridades do Dia) -->
+    <section class="focus-section">
+      <h2 class="section-title">Foco de Hoje</h2>
+      <div class="focus-grid">
+        
+        <!-- Bloco: Agenda de Hoje -->
+        <div class="focus-card">
+          <div class="focus-card-header">
+            <h3 class="focus-card-title">Agenda de hoje</h3>
+            <span class="focus-card-subtitle">Seus compromissos organizados por horário</span>
+          </div>
+          <div class="agenda-list">
+            
+            <div class="agenda-item">
+              <div class="agenda-icon-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="agenda-info">
+                <div class="agenda-time-row">
+                  <span class="agenda-time">09:30</span>
+                </div>
+                <h4 class="agenda-title">Daily da equipe</h4>
+                <a href="#entrar-daily" class="agenda-call-link" aria-label="Entrar na chamada da Daily da equipe">
+                  Entrar na chamada
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                </a>
+              </div>
+              <div class="agenda-badge-container">
+                <span class="agenda-duration">15min</span>
+              </div>
+            </div>
+
+            <div class="agenda-item">
+              <div class="agenda-icon-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="agenda-info">
+                <div class="agenda-time-row">
+                  <span class="agenda-time">11:00</span>
+                </div>
+                <h4 class="agenda-title">Workshop de UI/UX</h4>
+              </div>
+              <div class="agenda-badge-container">
+                <span class="agenda-duration">1h</span>
+              </div>
+            </div>
+
+            <div class="agenda-item">
+              <div class="agenda-icon-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="agenda-info">
+                <div class="agenda-time-row">
+                  <span class="agenda-time">14:00</span>
+                </div>
+                <h4 class="agenda-title">Alinhamento com o Cliente</h4>
+                <a href="#entrar-alinhamento" class="agenda-call-link" aria-label="Entrar na chamada de Alinhamento com o Cliente">
+                  Entrar na chamada
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                </a>
+              </div>
+              <div class="agenda-badge-container">
+                <span class="agenda-duration">45min</span>
+              </div>
+            </div>
+
+            <div class="agenda-item">
+              <div class="agenda-icon-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="agenda-info">
+                <div class="agenda-time-row">
+                  <span class="agenda-time">16:30</span>
+                </div>
+                <h4 class="agenda-title">Revisão Técnica de Código</h4>
+              </div>
+              <div class="agenda-badge-container">
+                <span class="agenda-duration">30min</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Bloco: Checklist Interativo de Tarefas -->
+        <div class="focus-card">
+          <div class="focus-card-header">
+            <h3 class="focus-card-title">Checklist de Prioridades</h3>
+            <span class="focus-card-subtitle">Clique nos itens para marcá-los como concluídos</span>
+          </div>
+          <div class="task-list">
+            
+            <label class="task-item">
+              <input type="checkbox" checked />
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <div class="task-info">
+                <span class="task-name">Revisar relatórios financeiros de Abril</span>
+                <span class="task-tag tag-high">Alta Prioridade</span>
+              </div>
+            </label>
+
+            <label class="task-item">
+              <input type="checkbox" />
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <div class="task-info">
+                <span class="task-name">Aprovar pull requests pendentes no repositório core</span>
+                <span class="task-tag tag-medium">Tech</span>
+              </div>
+            </label>
+
+            <label class="task-item">
+              <input type="checkbox" />
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <div class="task-info">
+                <span class="task-name">Responder feedback do cliente sobre a última entrega</span>
+                <span class="task-tag tag-high">Alta Prioridade</span>
+              </div>
+            </label>
+
+            <label class="task-item">
+              <input type="checkbox" />
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <div class="task-info">
+                <span class="task-name">Subir nova versão de testes para homologação</span>
+                <span class="task-tag tag-low">Apoio</span>
+              </div>
+            </label>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="dashboard-footer" role="contentinfo">
+      <p>Dashboard de Produtividade • Antigravity 2026</p>
+    </footer>
+
+  </div>
+
+  <!-- Pequeno Script para carregar a data e dinamicizar o gráfico -->
+  <script>
+    function updateDashboard() {
+      const now = new Date();
+      
+      // 1. Atualizar Data
+      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const dateString = now.toLocaleDateString('pt-BR', options);
+      const formattedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+      document.getElementById('current-date').textContent = formattedDate;
+
+      // 2. Destacar o dia atual no gráfico e atualizar status
+      // getDay() retorna: 0 = Dom, 1 = Seg, 2 = Ter, 3 = Qua, 4 = Qui, 5 = Sex, 6 = Sáb
+      const dayOfWeek = now.getDay();
+      // Mapeamento para o índice dos wrappers no HTML (0 = Seg, 1 = Ter, ..., 5 = Sáb, 6 = Dom)
+      const barIndex = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      
+      const bars = document.querySelectorAll('.chart-bar-wrapper');
+      const volumes = [14, 28, 19, 22, 12, 3, 1]; // Volumes fictícios Seg-Dom
+      const average = 18;
+      
+      bars.forEach((bar, idx) => {
+        if (idx === barIndex) {
+          bar.classList.add('active');
+          const chartBar = bar.querySelector('.chart-bar');
+          const val = chartBar.getAttribute('data-value');
+          if (!val.includes('(Hoje)')) {
+            chartBar.setAttribute('data-value', `${val} (Hoje)`);
+          }
+        } else {
+          bar.classList.remove('active');
+        }
+      });
+
+      // 3. Atualizar indicador de status de volume (contexto) baseado no dia atual
+      const todayVolume = volumes[barIndex];
+      const statusIndicator = document.querySelector('.chart-status-indicator');
+      
+      if (todayVolume < average) {
+        statusIndicator.className = 'chart-status-indicator calm';
+        statusIndicator.innerHTML = `
+          <span class="pulse-dot" style="background-color: var(--color-meeting);" aria-hidden="true"></span>
+          Hoje está tranquilo (${todayVolume} emails recebidos vs. média de ${average})
+        `;
+      } else {
+        statusIndicator.className = 'chart-status-indicator busy';
+        statusIndicator.innerHTML = `
+          <span class="pulse-dot" style="background-color: #ef4444;" aria-hidden="true"></span>
+          Hoje está movimentado (${todayVolume} emails recebidos vs. média de ${average})
+        `;
+      }
+    }
+    
+    updateDashboard();
+  </script>
+</body>
+</html>
