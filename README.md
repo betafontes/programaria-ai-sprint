@@ -27,14 +27,14 @@ A aplicação é capaz de analisar eventos existentes, interpretar tarefas descr
 
 ### ⚙️ Configuração
 
-### Clone o repositório
+#### Clone o repositório
 
 ```bash
 git clone https://github.com/betafontes/programaria-ai-sprint
 cd productivity-agent
 ```
 
-### Crie e ative o ambiente virtual
+#### Crie e ative o ambiente virtual
 
 ```bash
 python -m venv venv
@@ -46,13 +46,13 @@ Windows:
 venv\Scripts\activate
 ```
 
-### Instale as dependências
+#### Instale as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Configure as variáveis de ambiente
+#### Configure as variáveis de ambiente
 
 Crie um arquivo `.env` na raiz do projeto:
 
@@ -62,17 +62,17 @@ CALENDAR_ID=
 CLAUDE_MODEL=claude-sonnet-4-6
 ```
 
-### Configure as credenciais do Google
+#### Configure as credenciais do Google
 
 Adicione o arquivo `credentials.json` na raiz do projeto para autenticação com a Google Calendar API.
 
-### ▶️ Executando o projeto
+#### ▶️ Executando o projeto
 
 ```bash
 python main.py
 ```
 
-### 📚 Aprendizados
+#### 📚 Aprendizados
 
 Durante o desenvolvimento deste projeto foram explorados conceitos como:
 
@@ -82,7 +82,7 @@ Durante o desenvolvimento deste projeto foram explorados conceitos como:
 - Automação de Processos
 - Desenvolvimento de Agentes de IA
 
-### 👩‍💻 Desenvolvido por
+#### 👩‍💻 Desenvolvido por
 
 **Roberta Fontes**
 
