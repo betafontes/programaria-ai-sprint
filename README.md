@@ -6,7 +6,7 @@ O Productivity Agent é um agente de produtividade que integra Inteligência Art
 
 A aplicação é capaz de analisar eventos existentes, interpretar tarefas descritas em linguagem natural e sugerir ajustes na agenda para otimizar a rotina do usuário.
 
-## 🚀 Funcionalidades
+### 🚀 Funcionalidades
 
 - Integração com Google Calendar
 - Leitura de eventos da agenda
@@ -16,7 +16,7 @@ A aplicação é capaz de analisar eventos existentes, interpretar tarefas descr
 - Identificação de eventos importantes
 - Automação de planejamento semanal
 
-## 🛠️ Tecnologias utilizadas
+### 🛠️ Tecnologias utilizadas
 
 - Python
 - Google Calendar API
@@ -25,12 +25,12 @@ A aplicação é capaz de analisar eventos existentes, interpretar tarefas descr
 - Google OAuth
 - JSON
 
-## ⚙️ Configuração
+### ⚙️ Configuração
 
 ### Clone o repositório
 
 ```bash
-git clone <[url-do-repositorio](https://github.com/betafontes)>
+git clone https://github.com/betafontes/programaria-ai-sprint
 cd productivity-agent
 ```
 
@@ -66,13 +66,13 @@ CLAUDE_MODEL=claude-sonnet-4-6
 
 Adicione o arquivo `credentials.json` na raiz do projeto para autenticação com a Google Calendar API.
 
-## ▶️ Executando o projeto
+### ▶️ Executando o projeto
 
 ```bash
 python main.py
 ```
 
-## 📚 Aprendizados
+### 📚 Aprendizados
 
 Durante o desenvolvimento deste projeto foram explorados conceitos como:
 
@@ -82,7 +82,7 @@ Durante o desenvolvimento deste projeto foram explorados conceitos como:
 - Automação de Processos
 - Desenvolvimento de Agentes de IA
 
-## 👩‍💻 Desenvolvido por
+### 👩‍💻 Desenvolvido por
 
 **Roberta Fontes**
 
