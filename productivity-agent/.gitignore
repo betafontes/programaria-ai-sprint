@@ -2,14 +2,12 @@
 venv/
 .venv/
 
-# Variáveis de ambiente
-.env
-
-# Credenciais Google
+# Credenciais e tokens
 credentials.json
 token.json
+.env
 
-# Cache Python
+# Python
 __pycache__/
 *.pyc
 *.pyo
@@ -18,12 +16,9 @@ __pycache__/
 # VS Code
 .vscode/
 
-# Sistema
+# Sistema operacional
 .DS_Store
 Thumbs.db
 
 # Logs
 *.log
-
-# Arquivos temporários
-*.tmp
