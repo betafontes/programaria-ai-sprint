@@ -1,4 +1,4 @@
-## Projetos Práticos desenvolvidos durante a **Sprint IA no Trabalho**, da **PrograMaria**.
+## Projeto Prático desenvolvido durante a **Sprint IA no Trabalho**, da **PrograMaria**.
 
 ### 📌 Productivity Agent
 
